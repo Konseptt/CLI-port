@@ -1,199 +1,255 @@
+/* Root variables for reusable colors and values */
 :root {
-  --background: #262a33;
-  --primaryTextColor: #e5e5e5;
-  --secundaryTextColor: #e5e512;
-  --highlightTextColor: #0fa8cd;
-  --white: #fff;
-  --baseDirectory: "guest@ranjansharma.info.np:~$";
+  --background: #262a33;              /* Background color of the terminal */
+  --primaryTextColor: #e5e5e5;        /* Main text color */
+  --secundaryTextColor: #e5e512;      /* Secondary text color (highlight, commands) */
+  --highlightTextColor: #0fa8cd;      /* Color for highlighted text */
+  --white: #fff;                      /* White color for certain elements */
+  --baseDirectory: "guest@ranjansharma.info.np:~$";  /* Default directory path for terminal */
 }
 
+/* Universal box-sizing for all elements */
 * {
-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
+/* Style for the body */
 body {
-  margin: 0;
-  padding: 15px 20px;
-  min-height: 99%;
-  width: 100%;
-  height: 100%;
-  color: var(--primaryTextColor);
-  text-shadow: 0 0 1px var(--secundaryTextColor);
-  background: var(--background);
-  font-family: cursor, monospace;
-  overflow-x: hidden;
+  margin: 0;                          /* Remove default margin */
+  padding: 15px 20px;                  /* Padding for the content */
+  min-height: 99%;                     /* Ensures the body takes full height */
+  width: 100%;                         /* Full width of the page */
+  height: 100%;                        /* Full height of the page */
+  color: var(--primaryTextColor);      /* Set primary text color */
+  text-shadow: 0 0 1px var(--secundaryTextColor); /* Add text shadow for effect */
+  background: var(--background);      /* Set background color */
+  font-family: cursor, monospace;     /* Set font for terminal */
+  overflow-x: hidden;                 /* Hide horizontal overflow */
 }
+
+/* Customize text selection appearance */
 ::selection {
-  color: var(--background);
-  background-color: var(--primaryTextColor);
+  color: var(--background);           /* Text color when selected */
+  background-color: var(--primaryTextColor); /* Background color when selected */
 }
+
+/* For Firefox selection */
 ::-moz-selection {
-  color: #211830;
-  background-color: var(--primaryTextColor);
+  color: #211830;                     /* Text color when selected in Firefox */
+  background-color: var(--primaryTextColor); /* Background color when selected */
 }
+
+/* Styling for the invisible textarea input element */
 textarea {
   position: absolute;
-  left: -100vw;
-  background-color: var(--background);
-  border: none;
-  color: white;
+  left: -100vw;                       /* Move textarea out of view */
+  background-color: var(--background); /* Match background color */
+  border: none;                       /* No border for input */
+  color: white;                       /* Set text color */
 }
 
+/* Style for bold text */
 b {
-  font-weight: bold;
-  text-decoration: underline;
+  font-weight: bold;                  /* Make text bold */
+  text-decoration: underline;         /* Underline bold text */
 }
 
+/* Cursor styling for the terminal */
 .cursor {
-  font-size: 0.75rem;
-  color: var(--secundaryTextColor);
-  background-color: var(--secundaryTextColor);
-  position: relative;
-  opacity: 1;
-  height: 1.5em;
-  width: 10px;
-  max-width: 10px;
-  transform: translateY(4px);
-  overflow: hidden;
-  text-indent: -5px;
-  display: inline-block;
-  text-decoration: blink;
-  animation: blinker 1s linear infinite;
+  font-size: 0.75rem;                 /* Set font size for the cursor */
+  color: var(--secundaryTextColor);    /* Set cursor color */
+  background-color: var(--secundaryTextColor); /* Cursor background color */
+  position: relative;                 /* Position the cursor relative to the parent */
+  opacity: 1;                         /* Cursor visibility */
+  height: 1.5em;                      /* Height of the cursor */
+  width: 10px;                        /* Width of the cursor */
+  max-width: 10px;                    /* Maximum width of the cursor */
+  transform: translateY(4px);         /* Adjust cursor position */
+  overflow: hidden;                   /* Hide overflowing content */
+  text-indent: -5px;                  /* Indent text for cursor */
+  display: inline-block;              /* Display cursor inline */
+  text-decoration: blink;             /* Blink effect for the cursor */
+  animation: blinker 1s linear infinite; /* Cursor blink animation */
 }
+
+/* Keyframes for cursor blink animation */
 @keyframes blinker {
   50% {
-    opacity: 0;
+    opacity: 0;                       /* Hide cursor at half time */
   }
 }
+
+/* Style for the command line prompt */
 #command {
-  cursor: text;
-  height: 50px;
-  color: var(--secundaryTextColor);
-}
-#liner {
-  line-height: 1.3em;
-  margin-top: -2px;
-  animation: show 0.5s ease forwards;
-  animation-delay: 1.2s;
-  opacity: 0;
-}
-#liner::before {
-  color: var(--highlightTextColor);
-  content: var(--baseDirectory);
+  cursor: text;                       /* Show text cursor when focused */
+  height: 50px;                        /* Height of the command line input */
+  color: var(--secundaryTextColor);     /* Set text color */
 }
 
+/* Style for the terminal prompt line */
+#liner {
+  line-height: 1.3em;                  /* Line height for prompt */
+  margin-top: -2px;                    /* Adjust margin for better alignment */
+  animation: show 0.5s ease forwards;   /* Animation for showing the prompt */
+  animation-delay: 1.2s;               /* Delay before prompt appears */
+  opacity: 0;                          /* Initially hidden */
+}
+
+/* Custom before pseudo-element for terminal prompt */
+#liner::before {
+  color: var(--highlightTextColor);    /* Set color for the prompt */
+  content: var(--baseDirectory);       /* Use base directory as prompt text */
+}
+
+/* Keyframes for showing prompt */
 @keyframes show {
   from {
-    opacity: 0;
+    opacity: 0;                        /* Initially hidden */
   }
   to {
-    opacity: 1;
+    opacity: 1;                        /* Fade in */
   }
 }
 
+/* Styling for paragraphs (command output) */
 p {
-  display: block;
-  line-height: 1.3em;
-  margin: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  margin: 0;
-  letter-spacing: 0.05em;
-  animation: typing 0.5s steps(30, end);
+  display: block;                      /* Block display for paragraphs */
+  line-height: 1.3em;                   /* Set line height */
+  margin: 0;                           /* Remove default margin */
+  overflow: hidden;                    /* Hide overflow */
+  white-space: nowrap;                 /* Prevent line breaks */
+  margin: 0;                           /* Ensure no margin */
+  letter-spacing: 0.05em;              /* Slight letter spacing */
+  animation: typing 0.5s steps(30, end); /* Typing animation for text */
 }
+
+/* Class for no animation */
 .no-animation {
-  animation: none !important;
+  animation: none !important;          /* Disable animation */
 }
+
+/* Class for typing animation */
 .typing-animation {
-  animation: typing 0.5s steps(30, end);
+  animation: typing 0.5s steps(30, end); /* Typing animation */
 }
+
+/* Class to add margin to the left */
 .margin {
-  margin-left: 20px;
+  margin-left: 20px;                   /* Left margin */
 }
+
+/* Keyframes for typing effect */
 @keyframes typing {
   from {
-    width: 0;
+    width: 0;                          /* Start with no width */
   }
   to {
-    width: 100%;
+    width: 100%;                       /* End with full width */
   }
 }
+
+/* Class for index color */
 .index {
-  color: #DCDCCC;
+  color: #DCDCCC;                      /* Color for index text */
 }
+
+/* Class for highlighting text */
 .highlightColor {
-  color: var(--highlightTextColor);
+  color: var(--highlightTextColor);    /* Highlight text color */
 }
+
+/* Class for command text color */
 .command {
-  color: var(--secundaryTextColor);
-  text-shadow: 0 0 5px var(--secundaryTextColor); 
+  color: var(--secundaryTextColor);    /* Set color for commands */
+  text-shadow: 0 0 5px var(--secundaryTextColor); /* Add text shadow */
 }
+
+/* Class for error text */
 .error {
-  color: var(--highlightTextColor);
+  color: var(--highlightTextColor);    /* Set color for errors */
 }
+
+/* Class for white text */
 .white {
-  color:var(--white);
+  color: var(--white);                 /* Set text color to white */
 }
+
+/* Class for inherit or link color */
 .inherit,
 a {
-  color: #9C8394;
+  color: #9C8394;                      /* Set color for links and inherited text */
 }
+
+/* Style for links */
 a {
-  text-decoration: inherit;
+  text-decoration: inherit;            /* Remove link decoration */
 }
+
+/* Hover effect for links */
 a:hover {
-  background: var(--secundaryTextColor);
-  color:var(--background);
+  background: var(--secundaryTextColor); /* Background color on hover */
+  color: var(--background);            /* Text color on hover */
 }
+
+/* Focus style for links */
 a:focus {
-  outline: 0;
+  outline: 0;                          /* Remove outline when focused */
 }
 
+/* Mobile input styling (hidden by default) */
 #mobileInput {
-display: none;
+  display: none;                       /* Hide mobile input by default */
 }
 
-@media (max-width:600px){
+/* Media query for mobile devices (max-width: 600px) */
+@media (max-width:600px) {
   body {
-    padding: 0.5rem 0.8rem;
-    overflow-x: auto;
+    padding: 0.5rem 0.8rem;             /* Smaller padding for mobile */
+    overflow-x: auto;                   /* Enable horizontal scroll on small screens */
   }
 
+  /* Hide cursor on mobile */
   #cursor {
     display: none;
   }
 
+  /* Hide the textarea input */
   textarea {
     display: none;
   }
 
+  /* Hide the regular cursor */
   .cursor {
     display: none;
   }
 
+  /* Display mobile input on small screens */
   #mobileInput {
     display: block;
   }
 
+  /* Style for the mobile input field */
   #mobileInput input {
-    border: none;
-    background-color: var(--background);
-    width: 85%;
-    color: var(--primaryTextColor);
-    font-family: monospace;
-    font-size: 1rem;
-    outline: none;
-    font-weight: 500;
-    vertical-align:middle;
+    border: none;                       /* No border */
+    background-color: var(--background); /* Match background color */
+    width: 85%;                          /* Adjust width */
+    color: var(--primaryTextColor);      /* Text color */
+    font-family: monospace;              /* Monospace font for consistency */
+    font-size: 1rem;                     /* Set font size */
+    outline: none;                       /* Remove outline */
+    font-weight: 500;                    /* Medium font weight */
+    vertical-align: middle;              /* Align vertically */
   }
 
+  /* Before pseudo-element for mobile input */
   #mobileInput::before {
-    content: ">";
-    color: var(--primaryTextColor);
-    margin-right: 10px;
+    content: ">";                        /* Add '>' as prompt */
+    color: var(--primaryTextColor);      /* Set color for the prompt */
+    margin-right: 10px;                  /* Add margin between prompt and input */
   }
 
+  /* Adjust terminal font size for mobile */
   #terminal {
-    font-size: small;
+    font-size: small;                    /* Smaller font size */
   }
 }
