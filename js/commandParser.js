@@ -1,189 +1,199 @@
-// Media query to check if the window width is 600px or less (mobile view)
-const mql = window.matchMedia("(max-width: 600px)");
+// Define BASE_ROOT constant
+const BASE_ROOT = "guest@ranjansharma.info.np:~$ ";
 
-// Initialize the page when loaded
-window.onload = init;
+/**
+ * Command parser for CLI application.
+ * Handles various commands and renders appropriate responses.
+ */
 
-// Initialization function
-function init() {
-  cursor.style.left = "0px";  // Set initial cursor position
-  renderBanner();              // Render the terminal banner
-}
+window.onload = () => {
+  cursor.style.left = "0px";
+  renderBanner();
+  textAreaInput.focus();
+  document.body.addEventListener('click', () => textAreaInput.focus());
+};
 
-let comandHistory = [];  // Array to store the command history
-let commandIndex = 0;    // Index to navigate through the command history
+let commandHistory = [];
+let commandIndex = 0;
 
-// Function to process the user input command
+/**
+ * Processes the given command and renders the appropriate response.
+ * @param {string} command - The command to process.
+ */
 function processCommand(command) {
-  const args = formatCommand(command);  // Format the command input
+  try {
+    const args = formatCommand(command);
+    renderLine(BASE_ROOT + command, "no-animation", 0);
 
-  renderLine(BASE_ROOT + command, "no-animation", 0);  // Render the command entered
-
-  // Switch case to handle different commands
-  switch (args[0]) {
-    case "help":
-      // Display all available commands
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      renderMultipleLines(COMMAND_LIST, 80);
-      break;
-      
-    case "about":
-      // Display about information
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      renderMultipleLines(ABOUT, 80);
-      break;
-      
-    case "social":
-      // Display social media links
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      renderMultipleLines(SOCIAL, 80);
-      break;
-      
-    case "projects":
-      // Display projects list
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      renderMultipleLines(PROJECTS, 80);
-      break;
-      
-    case "email":
-      // Display email information
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      renderMultipleLines(EMAIL_INFO, 80);
-      break;
-      
-    case "banner":
-      // Re-render the terminal banner
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      renderBanner();
-      break;
-      
-    case "curriculum":
-      // Open the curriculum in a new tab
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      newTab("https://www.ranjansharma.info.np/");
-      break;
-      
-    case "clear":
-      // Clear the terminal content
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      setTimeout(() => contentHook = clearTerminal(terminal, contentHook), 1);
-      break;
-      
-    case "ls":
-      // List directories in the terminal
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      renderMultipleLines(DIRECTORIES, 80);
-      break;
-      
-    case "sudo":
-      // Simulate a sudo command (admin privilege required)
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      renderMultipleLines(SUDO, 80);
-      break;
-      
-    case "education":
-      // Display education info, adjust for mobile view
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      if (mql.matches) {
-        renderMultipleLines(MOBILE_EDUCATION_INFO, 80);
-      } else {
-        renderMultipleLines(EDUCATION_INFO, 80);
-      }
-      break;
-      
-    case "pwd":
-      // Show the current directory
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      renderLine("<br>/home/ranjansharma/projects/cliPortfolio<br><br>");
-      break;
-      
-    case "echo":
-      // Echo the command entered
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      const printCommands = args.slice(1).join(" ");
-      renderLine("<br>" + printCommands + "<br></br>", 80);
-      break;
-      
-    case "cd":
-      // Simulate changing directories
-      commandIndex = addCommandToHistory(args, comandHistory, commandIndex);
-      if (args[1] === "music") {
-        renderLine("Opening music...", 80);
-        newTab("https://open.spotify.com/user/y2v4skznrqx7dt5xju6vzbxdy");
-      } else if (args[1] === "github") {
-        renderLine("Accessing Github...", 80);
-        newTab("https://github.com/Konseptt?tab=repositories");
-      } else if (args[1] === "leetcode") {
-        renderLine("Opening Leetcode...", 80);
-        newTab("https://leetcode.com/u/konssept/");
-      } else {
-        renderLine("Directory not found: " + args.slice(1).join(" "));
-      }
-      break;
-      
-    case "history":
-      // Display the command history
-      renderLine("<br>");
-      comandHistory.push("<br>");
-      renderMultipleLines(comandHistory, 80);
-      comandHistory.pop();
-      break;
-      
-    default:
-      // Command not found, display a message
-      if (mql.matches) {
-        renderLine("<br>Command not found");
-        renderLine("type <span class=\"command\">'help'</span> for all commands<br><br>");
-      } else {
-        renderLine("Command not found. For a list of commands, type <span class=\"command\">'help'</span>.", "error", 100);
-      }
-      break;
+    switch (args[0]) {
+      case "help":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        renderMultipleLines(COMMAND_LIST, 80);
+        break;
+      case "about":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        renderMultipleLines(ABOUT, 80);
+        break;
+      case "social":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        renderMultipleLines(SOCIAL, 80);
+        break;
+      case "projects":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        renderMultipleLines(PROJECTS, 80);
+        break;
+      case "email":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        renderMultipleLines(EMAIL_INFO, 80);
+        break;
+      case "clear":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        setTimeout(() => {
+          contentHook = clearTerminal(terminal, contentHook);
+          renderBanner();
+        }, 1);
+        break;
+      case "ls":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        renderMultipleLines(DIRECTORIES, 80);
+        break;
+      case "sudo":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        renderMultipleLines(SUDO, 80);
+        break;
+      case "education":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        if (window.matchMedia("(max-width: 600px)").matches) {
+          renderMultipleLines(MOBILE_EDUCATION_INFO, 80);
+        } else {
+          renderMultipleLines(EDUCATION_INFO, 80);
+        }
+        break;
+      case "pwd":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        renderLine("<br>/home/ranjansharma/projects/cliPortfolio<br><br>");
+        break;
+      case "echo":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        const printCommands = args.slice(1).join(" ");
+        renderLine("<br>" + printCommands + "<br></br>", 80);
+        break;
+      case "cd":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        handleCdCommand(args);
+        break;
+      case "history":
+        renderLine("<br>");
+        commandHistory.push("<br>");
+        renderMultipleLines(commandHistory, 80);
+        commandHistory.pop();
+        break;
+      case "quote":
+        const randomQuote = getRandomQuote();
+        renderLine(`<br>${randomQuote}<br>`, "highlightColor", 80);
+        break;
+      case "skills":
+        renderMultipleLines(SKILLS, 80);
+        break;
+      default:
+        handleUnknownCommand(args[0]);
+        break;
+    }
+  } catch (error) {
+    renderLine(`<br>Error: ${error.message}<br>`, "error", 80);
   }
 }
 
-// Event listeners for keyboard input
+// Wrap the original processCommand function to show/hide loading indicator
+const originalProcessCommand = processCommand;
+processCommand = function(command) {
+  originalProcessCommand(command);
+};
+
+/**
+ * Handles the 'cd' command.
+ * @param {Array} args - The command arguments.
+ */
+function handleCdCommand(args) {
+  if (args[1] === "music") {
+    renderLine("Opening music...", 80);
+    newTab("https://open.spotify.com/user/y2v4skznrqx7dt5xju6vzbxdy");
+  } else if (args[1] === "github") {
+    renderLine("Accessing Github...", 80);
+    newTab("https://github.com/Konseptt?tab=repositories");
+  } else if (args[1] === "leetcode") {
+    renderLine("Opening Leetcode...", 80);
+    newTab("https://leetcode.com/u/konssept/");
+  } else {
+    renderLine("Directory not found: " + args.slice(1).join(" "));
+  }
+}
+
+/**
+ * Handles unknown commands by suggesting similar commands.
+ * @param {string} input - The unknown command input.
+ */
+function handleUnknownCommand(input) {
+  const suggestions = suggestCommands(input);
+  if (suggestions.length > 0) {
+    renderLine(`<br>Command not found. Did you mean: ${suggestions.join(", ")}?`);
+  } else {
+    renderLine("<br>Command not found. For a list of commands, type <span class=\"command\">'help'</span>.");
+  }
+}
+
+// Event listeners for input handling
 textAreaInput.addEventListener("keydown", handleEnterKeyPress);
 textAreaInput.addEventListener("keydown", handleArrowUpKeyPress);
 textAreaInput.addEventListener("keydown", handleArrowDownKeyPress);
 
-// Mobile input event listener
 mobileInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
-    processCommand(event.target.value);  // Process the command
-    clearInput(mobileInput);              // Clear the input field
+    processCommand(event.target.value);
+    clearInput(mobileInput);
   }
 });
 
-// Render a single line of text in the terminal
+/**
+ * Renders a line of text in the terminal.
+ * @param {string} text - The text to render.
+ * @param {string} style - The CSS class to apply.
+ * @param {number} time - The delay before rendering.
+ * @param {boolean} asciiArt - Whether the text is ASCII art.
+ */
 function renderLine(text, style, time, asciiArt = false) {
-  let formattedText = text;
-  if (asciiArt) {
-    formattedText = formatASCIIArt(text);  // Format ASCII art if needed
-  } else {
-    formattedText = formatText(text);  // Format regular text
-  }
+  let formattedText = asciiArt ? formatASCIIArt(text) : formatText(text);
   setTimeout(() => {
-    const next = createLine(formattedText, style);  // Create a line element
-    insertLine(next, contentHook);  // Insert it into the terminal
-    scrollToBottom();  // Scroll to the bottom
+    const next = createLine(formattedText, style);
+    insertLine(next, contentHook);
+    scrollToBottom();
   }, time);
 }
 
-// Format text for ASCII art (replaces spaces with non-breaking spaces)
+/**
+ * Formats ASCII art text by replacing spaces with non-breaking spaces.
+ * @param {string} text - The text to format.
+ * @returns {string} - The formatted text.
+ */
 function formatASCIIArt(text) {
-  const space = " ";
-  const noBreakingSpace = "&nbsp";
-  return text.replaceAll(space, noBreakingSpace);
+  return text.replaceAll(" ", "&nbsp");
 }
 
-// Format regular text (replaces double spaces with non-breaking spaces)
+/**
+ * Formats regular text by replacing double spaces with double non-breaking spaces.
+ * @param {string} text - The text to format.
+ * @returns {string} - The formatted text.
+ */
 function formatText(text) {
-  const doubleSpace = "  ";
-  const doubleNoBreakingSpace = "&nbsp;&nbsp";
-  return text.replaceAll(doubleSpace, doubleNoBreakingSpace);
+  return text.replaceAll("  ", "&nbsp;&nbsp");
 }
 
-// Create a line element to be inserted into the terminal
+/**
+ * Creates a line element with the given text and style.
+ * @param {string} text - The text to display.
+ * @param {string} style - The CSS class to apply.
+ * @returns {HTMLElement} - The created line element.
+ */
 function createLine(text, style) {
   const line = document.createElement("p");
   line.className = style;
@@ -191,12 +201,18 @@ function createLine(text, style) {
   return line;
 }
 
-// Insert a line element into the terminal at the correct position
+/**
+ * Inserts a line element before the reference element.
+ * @param {HTMLElement} element - The element to insert.
+ * @param {HTMLElement} referenceElement - The reference element.
+ */
 function insertLine(element, referenceElement) {
   referenceElement?.parentNode?.insertBefore(element, referenceElement);
 }
 
-// Scroll to the bottom of the page
+/**
+ * Scrolls the window to the bottom of the page.
+ */
 function scrollToBottom() {
   window.scrollTo({
     top: document.body.offsetHeight,
@@ -204,21 +220,32 @@ function scrollToBottom() {
   });
 }
 
-// Clear the input field after a command is executed
+/**
+ * Clears the input field.
+ * @param {HTMLInputElement} inputElement - The input element to clear.
+ */
 function clearInput(inputElement) {
   inputElement.value = "";
 }
 
-// Render multiple lines of text in the terminal
+/**
+ * Renders multiple lines of text in the terminal.
+ * @param {Array} lines - The lines of text to render.
+ * @param {number} delay - The delay between rendering each line.
+ * @param {string} style - The CSS class to apply.
+ * @param {boolean} asciiArt - Whether the text is ASCII art.
+ */
 function renderMultipleLines(lines, delay = 0, style = "", asciiArt = false) {
   lines.forEach((line, index) => {
-    renderLine(line, style, index * delay, asciiArt);  // Render each line with a delay
+    renderLine(line, style, index * delay, asciiArt);
   });
 }
 
-// Render the banner (adjusts for mobile view)
+/**
+ * Renders the banner in the terminal.
+ */
 function renderBanner() {
-  if (mql.matches) {
+  if (window.matchMedia("(max-width: 600px)").matches) {
     renderMultipleLines(MOBILE_BANNER, 80, "", true);
     setTimeout(() => {
       renderMultipleLines(TERMINAL_INFO_MOBILE, 80, "highlightColor");
@@ -231,36 +258,66 @@ function renderBanner() {
   }
 }
 
-// Clear the terminal content
+/**
+ * Clears the terminal content.
+ * @param {HTMLElement} root - The root element of the terminal.
+ * @param {HTMLElement} hook - The hook element to retain.
+ * @returns {HTMLElement} - The new hook element.
+ */
 function clearTerminal(root, hook) {
   const id = hook.id;
-  root.innerHTML = '<a id="' + id + '"></a>';  // Clear terminal and reset hook
-  hook = document.getElementById(id);
-  return hook;
+  root.innerHTML = '<a id="' + id + '"></a>';
+  return document.getElementById(id);
 }
 
-// Open a new tab with the provided link
+/**
+ * Opens a new tab with the given link.
+ * @param {string} link - The URL to open.
+ */
 function newTab(link) {
-  setTimeout(function () {
+  setTimeout(() => {
     window.open(link, "_blank");
   }, 500);
 }
 
-// Add the command to history and return the new index
+/**
+ * Adds a command to the command history.
+ * @param {Array} commands - The command arguments.
+ * @param {Array} historyArray - The command history array.
+ * @param {number} currentIndex - The current command index.
+ * @returns {number} - The updated command index.
+ */
 function addCommandToHistory(commands, historyArray, currentIndex) {
-  const commandString = commands.join(" ");
-  historyArray.push(commandString);  // Push the command into history
-  return currentIndex + 1;  // Return the new index
+  historyArray.push(commands.join(" "));
+  return currentIndex + 1;
 }
 
-// Format the command input (lowercase and trimmed)
+/**
+ * Formats a command string into an array of arguments.
+ * @param {string} command - The command string.
+ * @returns {Array} - The formatted command arguments.
+ */
 function formatCommand(command) {
-  command = command.toLowerCase();
-  command = command.trim();
-  return command.split(" ");
+  return command.toLowerCase().trim().split(" ");
 }
 
-// Handle "Enter" key press to process the command
+/**
+ * Suggests similar commands based on the input.
+ * @param {string} input - The input command.
+ * @returns {Array} - The suggested commands.
+ */
+function suggestCommands(input) {
+  const commands = [
+    "help", "about", "social", "projects", "email", "banner", "curriculum",
+    "clear", "ls", "sudo", "education", "pwd", "echo", "cd", "history", "quote", "skills"
+  ];
+  return commands.filter(cmd => cmd.includes(input));
+}
+
+/**
+ * Handles the Enter key press event.
+ * @param {KeyboardEvent} event - The key press event.
+ */
 function handleEnterKeyPress(event) {
   if (event.key === "Enter") {
     processCommand(event.target.value);
@@ -268,18 +325,24 @@ function handleEnterKeyPress(event) {
   }
 }
 
-// Handle "ArrowUp" key press to navigate command history
+/**
+ * Handles the Arrow Up key press event.
+ * @param {KeyboardEvent} event - The key press event.
+ */
 function handleArrowUpKeyPress(event) {
   if (event.key === "ArrowUp" && commandIndex > 0) {
-    commandIndex--;  // Move up in history
-    event.target.value = comandHistory[commandIndex];
+    commandIndex--;
+    event.target.value = commandHistory[commandIndex];
   }
 }
 
-// Handle "ArrowDown" key press to navigate command history
+/**
+ * Handles the Arrow Down key press event.
+ * @param {KeyboardEvent} event - The key press event.
+ */
 function handleArrowDownKeyPress(event) {
-  if (event.key === "ArrowDown" && commandIndex < comandHistory.length) {
-    commandIndex++;  // Move down in history
-    event.target.value = comandHistory[commandIndex] || "";
+  if (event.key === "ArrowDown" && commandIndex < commandHistory.length) {
+    commandIndex++;
+    event.target.value = commandHistory[commandIndex] || "";
   }
 }

@@ -1,66 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Meta tags for character encoding and compatibility -->
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    
-    <!-- Title for SEO and branding -->
-    <title>Ranjan's Portfolio | Web Developer & AI Enthusiast</title>
-    
-    <!-- Meta description for better SEO ranking -->
+    <title>Ranjan's CLI Portfolio</title>
     <meta name="description" content="Explore Ranjan Sharma's portfolio showcasing web development projects, AI applications, and coding expertise in Python, JavaScript, and more." />
-    
-    <!-- Open Graph meta tags for social media optimization -->
     <meta property="og:title" content="Ranjan's Portfolio" />
     <meta property="og:description" content="Explore Ranjan Sharma's portfolio showcasing web development projects, AI applications, and coding expertise." />
     <meta property="og:image" content="img/man.png" />
     <meta property="og:url" content="https://ranjansharma.info.np" />
     <meta name="twitter:card" content="summary_large_image" />
-    
-    <!-- Link to external CSS file -->
     <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
-    
-    <!-- Favicon for branding and browser tab icon -->
     <link rel="icon" type="image/png" href="img/man.png">
-    
-    <!-- JavaScript files for dynamic behavior -->
     <script defer src="js/commands.js"></script>
     <script defer src="js/inputRenderer.js"></script>
     <script defer type="module" src="js/commandParser.js"></script>
-    
-    <!-- Open Graph meta tags for image preview -->
-    <meta property="og:image" content="img/man.png" />
-    
   </head>
-
   <body>
-    <!-- Main container for the terminal-like interface -->
     <div id="terminal">
-      <!-- Anchor tag for content hook, enabling smooth scrolling to terminal content -->
       <a id="contentHook"></a>
     </div>
-    
-    <!-- Command input area, allows users to type commands or interact with the page -->
-    <div id="command" onclick="focusOnTextArea()">
-      
-      <!-- Textarea for capturing user input, styled as a terminal -->
+    <div id="command">
       <textarea
         type="text"
         id="texter"
-        onkeydown="moveCursor(this.value.length, event)"
-        autofocus
-        placeholder="Enter your command here..."  <!-- Placeholder for user-friendly interaction -->
+        placeholder="Enter your command here..."
       ></textarea>
-      
-      <!-- Line display with typing effect and cursor animation -->
       <div id="liner">
         <span id="typer"></span>
-        <!-- The cursor styled as a terminal block -->
         <b class="cursor" id="cursor">█</b>
-        
-        <!-- Mobile input style with fallback for touch devices -->
         <span id="mobileInput">
           <input 
             type="text" 
@@ -69,11 +38,11 @@
             spellcheck="false" 
             autocomplete="off" 
             inputmode="text" 
-            placeholder="Type here..."  <!-- Mobile-specific input field placeholder -->
+            placeholder="Type here..."
+            id="mobileInput"
           >
         </span>
       </div>
     </div>
-
   </body>
 </html>
