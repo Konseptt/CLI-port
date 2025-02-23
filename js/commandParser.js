@@ -49,8 +49,7 @@ function processCommand(command) {
       case "clear":
         commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
         setTimeout(() => {
-          contentHook = clearTerminal(terminal, contentHook);
-          renderBanner();
+          contentHook = clearTerminalKeepAsciiArt(terminal, contentHook);
         }, 1);
         break;
       case "ls":
@@ -94,6 +93,11 @@ function processCommand(command) {
         break;
       case "skills":
         renderMultipleLines(SKILLS, 80);
+        break;
+      case "youtube":
+        commandIndex = addCommandToHistory(args, commandHistory, commandIndex);
+        renderLine("Opening YouTube...", 80);
+        newTab("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
         break;
       default:
         handleUnknownCommand(args[0]);
@@ -268,6 +272,19 @@ function clearTerminal(root, hook) {
   const id = hook.id;
   root.innerHTML = '<a id="' + id + '"></a>';
   return document.getElementById(id);
+}
+
+/**
+ * Clears the terminal content but keeps the ASCII art.
+ * @param {HTMLElement} root - The root element of the terminal.
+ * @param {HTMLElement} hook - The hook element to retain.
+ * @returns {HTMLElement} - The new hook element.
+ */
+function clearTerminalKeepAsciiArt(root, hook) {
+  const asciiArtElements = Array.from(root.querySelectorAll('.ascii-art'));
+  root.innerHTML = '<a id="' + hook.id + '"></a>';
+  asciiArtElements.forEach(element => root.insertBefore(element, hook.nextSibling));
+  return document.getElementById(hook.id);
 }
 
 /**

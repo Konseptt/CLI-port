@@ -133,6 +133,7 @@ const COMMAND_LIST = [
   '<span class="command">help</span>           Display all commands',
   '<span class="command">quote</span>          Get a random quote',
   '<span class="command">skills</span>         Show my skills',
+  '<span class="command">youtube</span>        Watch a video',
   "<br>",
 ];
 
@@ -251,4 +252,13 @@ function processCommand(command) {
       break;
     // ...other cases...
   }
+}
+
+// Add youtube to the command suggestions
+function suggestCommands(input) {
+  const commands = [
+    "help", "about", "social", "projects", "email", "banner", "curriculum",
+    "clear", "ls", "sudo", "education", "pwd", "echo", "cd", "history", "quote", "skills", "youtube"
+  ];
+  return commands.filter(cmd => cmd.includes(input));
 }

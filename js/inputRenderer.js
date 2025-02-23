@@ -15,16 +15,16 @@ const terminal = document.getElementById("terminal");
  * ASCII Art for Banner
  */
 const ASCII_ART = [
-  "88      a8P                                                                        ",
-  "88    ,88'                                                                  ,d     ",
-  "88  ,88\"                                                                    88     ",
-  "88,d88'       ,adPPYba,   8b,dPPYba,   ,adPPYba,   ,adPPYba,  8b,dPPYba,  MM88MMM  ",
-  "8888\"88,     a8\"     \"8a  88P'   `\"8a  I8[    \"\"  a8P_____88  88P'    \"8a   88     ",
-  "88P   Y8b    8b       d8  88       88   `\"Y8ba,   8PP\"\"\"\"\"\"\"  88       d8   88     ",
-  "88     \"88,  \"8a,   ,a8\"  88       88  aa    ]8I  \"8b,   ,aa  88b,   ,a8\"   88,    ",
-  "88       Y8b  `\"YbbdP\"'   88       88  `\"YbbdP\"'   `\"Ybbd8\"'  88`YbbdP\"'    \"Y888  ",
-  "                                                              88                   ",
-  "                                                              88                   "
+  '<span class="ascii-art">88      a8P                                                                        </span>',
+  '<span class="ascii-art">88    ,88\'                                                                  ,d     </span>',
+  '<span class="ascii-art">88  ,88"                                                                    88     </span>',
+  '<span class="ascii-art">88,d88\'       ,adPPYba,   8b,dPPYba,   ,adPPYba,   ,adPPYba,  8b,dPPYba,  MM88MMM  </span>',
+  '<span class="ascii-art">8888"88,     a8"     "8a  88P\'   `"8a  I8[    ""  a8P_____88  88P\'    "8a   88     </span>',
+  '<span class="ascii-art">88P   Y8b    8b       d8  88       88   `"Y8ba,   8PP"""""""  88       d8   88     </span>',
+  '<span class="ascii-art">88     "88,  "8a,   ,a8"  88       88  aa    ]8I  "8b,   ,aa  88b,   ,a8"   88,    </span>',
+  '<span class="ascii-art">88       Y8b  `"YbbdP\'"   88       88  `"YbbdP\'"   `"Ybbd8"\'  88`YbbdP\'"    "Y888  </span>',
+  '<span class="ascii-art">                                                              88                   </span>',
+  '<span class="ascii-art">                                                              88                   </span>'
 ];
 
 /**
@@ -179,4 +179,30 @@ function handleAutocomplete(input) {
  */
 function suggestCommands(input) {
   return [];
+}
+
+/**
+ * Render a line of text with optional style and delay
+ * @param {string} text - The text to render
+ * @param {string} style - The style to apply
+ * @param {number} time - The delay before rendering
+ * @param {boolean} asciiArt - Whether the text is ASCII art
+ */
+function renderLine(text, style, time, asciiArt = false) {
+  let formattedText = asciiArt ? formatASCIIArt(text) : formatText(text);
+  setTimeout(() => {
+    const next = document.createElement("p");
+    if (style) {
+      next.classList.add(style);
+    }
+    if (asciiArt) {
+      next.classList.add('ascii-art');
+    }
+    next.innerHTML = `<span class="${style}">${formattedText}</span>`;
+    contentHook?.parentNode?.insertBefore(next, contentHook);
+    window.scrollTo({
+      top: document.body.offsetHeight,
+      behavior: "smooth"
+    });
+  }, time);
 }
